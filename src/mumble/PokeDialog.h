@@ -12,7 +12,7 @@ private:
 	Q_OBJECT
 
 private:
-	QMap< QString, unsigned int > *pokes;
+	QMap< QString, unsigned int > pokes;
 
 public:
 	PokeDialog(QWidget *parent = nullptr);
