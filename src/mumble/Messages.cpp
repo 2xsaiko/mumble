@@ -1063,6 +1063,16 @@ void MainWindow::msgTextMessage(const MumbleProto::TextMessage &msg) {
 						 false, overrideTTS, pSrc ? pSrc->bLocalIgnoreTTS : false);
 }
 
+void MainWindow::msgPoke(const MumbleProto::Poke &msg) {
+	ACTOR_INIT
+
+	if (!this->m_pokeDialog) {
+		this->m_pokeDialog = QSharedPointer< PokeDialog >(new PokeDialog(this));
+	}
+
+	this->m_pokeDialog->addPoke(pSrc->qsName);
+}
+
 /// This message is being received when the server informs the client about the access control list (ACL) for
 /// a channel or multiple channels. It seems like this message will only be received after having queried it.
 ///

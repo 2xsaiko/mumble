@@ -1007,6 +1007,12 @@ void ServerHandler::sendChannelTextMessage(unsigned int channel, const QString &
 	sendMessage(mptm);
 }
 
+void ServerHandler::pokeUser(unsigned int uiSession) {
+	MumbleProto::Poke packet;
+	packet.add_session(uiSession);
+	sendMessage(packet);
+}
+
 void ServerHandler::setUserComment(unsigned int uiSession, const QString &comment) {
 	MumbleProto::UserState mpus;
 	mpus.set_session(uiSession);

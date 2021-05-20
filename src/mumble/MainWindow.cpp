@@ -1579,6 +1579,7 @@ void MainWindow::qmUser_aboutToShow() {
 	}
 
 	qmUser->addAction(qaUserTextMessage);
+	qmUser->addAction(qaUserPoke);
 	if (Global::get().sh && Global::get().sh->uiVersion >= 0x010202)
 		qmUser->addAction(qaUserInformation);
 
@@ -1625,18 +1626,20 @@ void MainWindow::qmUser_aboutToShow() {
 		qaUserKick->setEnabled(false);
 		qaUserBan->setEnabled(false);
 		qaUserTextMessage->setEnabled(false);
-		qaUserLocalNickname->setEnabled(false);
-		qaUserLocalMute->setEnabled(false);
-		qaUserLocalVolume->setEnabled(false);
-		qaUserLocalIgnore->setEnabled(false);
-		qaUserLocalIgnoreTTS->setEnabled(false);
-		qaUserCommentReset->setEnabled(false);
-		qaUserTextureReset->setEnabled(false);
-		qaUserCommentView->setEnabled(false);
+    	qaUserPoke->setEnabled(false);
+    	qaUserLocalNickname->setEnabled(false);
+    	qaUserLocalMute->setEnabled(false);
+    	qaUserLocalVolume->setEnabled(false);
+    	qaUserLocalIgnore->setEnabled(false);
+    	qaUserLocalIgnoreTTS->setEnabled(false);
+    	qaUserCommentReset->setEnabled(false);
+    	qaUserTextureReset->setEnabled(false);
+    	qaUserCommentView->setEnabled(false);
 	} else {
 		qaUserKick->setEnabled(!isSelf);
 		qaUserBan->setEnabled(!isSelf);
 		qaUserTextMessage->setEnabled(true);
+		qaUserPoke->setEnabled(true);
 		qaUserLocalNickname->setEnabled(!isSelf);
 		qaUserLocalMute->setEnabled(!isSelf);
 		qaUserLocalVolume->setEnabled(!isSelf);
@@ -1919,6 +1922,11 @@ void MainWindow::on_qaUserTextMessage_triggered() {
 		return;
 
 	openTextMessageDialog(p);
+}
+
+void MainWindow::on_qaUserPoke_triggered() {
+	ClientUser *p = getContextMenuUser();
+	Global::get().sh->pokeUser(p->uiSession);
 }
 
 void MainWindow::openTextMessageDialog(ClientUser *p) {
@@ -2480,6 +2488,8 @@ void MainWindow::updateMenuPermissions() {
 		qaUserDeaf->setEnabled(p & (ChanACL::Write | ChanACL::MuteDeafen) && ((cu != user) || cu->bDeaf));
 		qaUserPrioritySpeaker->setEnabled(p & (ChanACL::Write | ChanACL::MuteDeafen));
 		qaUserTextMessage->setEnabled(p & (ChanACL::Write | ChanACL::TextMessage));
+		// TODO: separate ACL
+		qaUserPoke->setEnabled(p & (ChanACL::Write | ChanACL::TextMessage));
 		qaUserInformation->setEnabled((Global::get().pPermissions & (ChanACL::Write | ChanACL::Register))
 									  || (p & (ChanACL::Write | ChanACL::Enter)) || (cu == user));
 	} else {
@@ -2487,6 +2497,7 @@ void MainWindow::updateMenuPermissions() {
 		qaUserDeaf->setEnabled(false);
 		qaUserPrioritySpeaker->setEnabled(false);
 		qaUserTextMessage->setEnabled(false);
+		qaUserPoke->setEnabled(false);
 		qaUserInformation->setEnabled(false);
 	}
 

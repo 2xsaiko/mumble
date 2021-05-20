@@ -157,6 +157,7 @@ public:
 	void kickBanUser(unsigned int uiSession, const QString &reason, bool ban);
 	void sendUserTextMessage(unsigned int uiSession, const QString &message_);
 	void sendChannelTextMessage(unsigned int channel, const QString &message_, bool tree);
+	void pokeUser(unsigned int uiSession);
 	void setUserComment(unsigned int uiSession, const QString &comment);
 	void setUserTexture(unsigned int uiSession, const QByteArray &qba);
 	void setTokens(const QStringList &tokens);

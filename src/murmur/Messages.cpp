@@ -1494,6 +1494,34 @@ void Server::msgTextMessage(ServerUser *uSource, MumbleProto::TextMessage &msg) 
 	emit userTextMessage(uSource, tm);
 }
 
+void Server::msgPoke(ServerUser *uSource, MumbleProto::Poke &msg) {
+	MSG_SETUP(ServerUser::Authenticated);
+	RATELIMIT(uSource)
+
+	msg.set_actor(uSource->uiSession);
+
+	// Go through all users the message is sent to directly
+	for (int i = 0; i < msg.session_size(); ++i) {
+		unsigned int session = msg.session(i);
+		ServerUser *u        = qhUsers.value(session);
+
+		if (u) {
+			// TODO: separate permission
+
+			if (!ChanACL::hasPermission(uSource, u->cChannel, ChanACL::TextMessage, &acCache)) {
+				PERM_DENIED(uSource, u->cChannel, ChanACL::TextMessage);
+				return;
+			}
+
+			sendMessage(u, msg);
+		}
+	}
+
+	// TODO
+	// Emit the signal for RPC consumers
+	// emit userPoke(uSource, tm);
+}
+
 /// Helper function to log the groups of the given channel.
 ///
 /// @param server A pointer to the server object the provided channel lives on

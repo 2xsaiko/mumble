@@ -19,6 +19,7 @@
 #include "Usage.h"
 #include "UserLocalNicknameDialog.h"
 #include "UserLocalVolumeDialog.h"
+#include "PokeDialog.h"
 
 #include "ui_MainWindow.h"
 
@@ -169,6 +170,8 @@ protected:
 
 	Search::SearchDialog *m_searchDialog = nullptr;
 
+	QSharedPointer<PokeDialog> m_pokeDialog;
+
 	void createActions();
 	void setupGui();
 	void updateWindowTitle();
@@ -225,6 +228,7 @@ public slots:
 	void on_qaUserLocalNickname_triggered();
 	void on_qaUserLocalVolume_triggered();
 	void on_qaUserTextMessage_triggered();
+	void on_qaUserPoke_triggered();
 	void on_qaUserRegister_triggered();
 	void on_qaUserInformation_triggered();
 	void on_qaUserFriendAdd_triggered();
